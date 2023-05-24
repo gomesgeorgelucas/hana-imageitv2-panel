@@ -1,40 +1,58 @@
 import { PanelPlugin } from '@grafana/data';
-import { SimpleOptions } from './types';
-import { SimplePanel } from './components/SimplePanel';
+import { SimpleOptions } from './types/SimpleOptions';
+import { ImageItPanel } from './ImageItPanel';
+import { EditorSensorList } from 'customEditors/EditorSensorList';
+import { EditorMappingList } from 'customEditors/EditorMappingList';
+import { migrationHandler } from './migrationHandler';
 
-export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
-  return builder
-    .addTextInput({
-      path: 'text',
-      name: 'Simple text option',
-      description: 'Description of panel option',
-      defaultValue: 'Default value of text input option',
-    })
-    .addBooleanSwitch({
-      path: 'showSeriesCount',
-      name: 'Show series counter',
-      defaultValue: false,
-    })
-    .addRadio({
-      path: 'seriesCountSize',
-      defaultValue: 'sm',
-      name: 'Series counter size',
-      settings: {
-        options: [
-          {
-            value: 'sm',
-            label: 'Small',
-          },
-          {
-            value: 'md',
-            label: 'Medium',
-          },
-          {
-            value: 'lg',
-            label: 'Large',
-          },
-        ],
-      },
-      showIf: (config) => config.showSeriesCount,
-    });
-});
+export const plugin = new PanelPlugin<SimpleOptions>(ImageItPanel)
+  .setMigrationHandler(migrationHandler)
+  .setPanelOptions((builder) => {
+    const panelOptionsBuilder = builder
+      .addTextInput({
+        path: 'imageUrl',
+        name: 'Image URL',
+        description: 'URL of background image',
+        defaultValue: 'https://i.ibb.co/tLXrjb6/imageit.png',
+      })
+      .addBooleanSwitch({
+        path: 'forceImageRefresh',
+        name: 'Force image refresh',
+        description:
+          'Enable to force image refresh when data changes. Use only if cache control is not possible. Check readme on Github if not sure.',
+        defaultValue: false,
+      })
+      .addBooleanSwitch({
+        path: 'lockSensors',
+        name: 'Lock sensors movement',
+        defaultValue: false,
+        category: ['Sensors'],
+      })
+      .addNumberInput({
+        path: 'sensorsTextSize',
+        name: 'Sensors text size',
+        description: 'Default sensors text size. Default 10.',
+        defaultValue: 10,
+        category: ['Sensors'],
+      })
+      .addCustomEditor({
+        id: 'sensors',
+        path: 'sensors',
+        name: 'Sensors',
+        description: 'List of sensors',
+        category: ['Sensors'],
+        defaultValue: [],
+        editor: EditorSensorList,
+      })
+      .addCustomEditor({
+        id: 'mappings',
+        path: 'mappings',
+        name: 'Mappings',
+        description: 'List of mappings',
+        category: ['Mappings'],
+        defaultValue: [],
+        editor: EditorMappingList,
+      });
+
+    return panelOptionsBuilder;
+  });
