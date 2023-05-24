@@ -1,20 +1,42 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Imageit",
+  "name": "ImageIt V2",
   "id": "hana-imageit-panel",
   "info": {
-    "keywords": ["panel"],
+    "keywords": ["imageit", "picture", "panel"],
     "description": "Add measurements to a picture in grafana",
     "author": {
-      "name": "Hana"
+      "name": "Hana Electronics"
     },
     "logos": {
-      "small": "img/logo.svg",
-      "large": "img/logo.svg"
+      "small": "img/imageit_logo.png",
+      "large": "img/imageit_logo.png"
     },
-    "links": [],
-    "screenshots": [],
+    "links": [
+      {
+        "name": "Project site",
+        "url": "https://github.com/gomesgeorgelucas/hana-imageitv2-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/gomesgeorgelucas/hana-imageitv2-panel/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "Panel Example",
+        "path": "img/imageit_example.png"
+      },
+      {
+        "name": "Sensor options",
+        "path": "img/imageit_sensor.png"
+      },
+      {
+        "name": "Mapping options",
+        "path": "img/imageit_mapping.png"
+      }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
